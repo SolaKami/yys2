@@ -8,5 +8,16 @@ class RobotMode(Enum):
 
 
 class OS(Enum):
-    mac = 1
-    win = 2
+    mac = 'mac'
+    win = 'win'
+    mumu = 'mumu'
+
+class App(Enum):
+    desk = 1
+    moniqi = 2
+
+
+class ScreenSize(Enum):
+    size2560 = 1
+    size1280 = 2
+

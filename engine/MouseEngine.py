@@ -1,10 +1,7 @@
 from pymouse import PyMouse
-from base import Log
+from base import log
 
 class MouseEngine:
-
-    # declare register
-    registerengine = 0
 
     # initial function
     def __init__(self,registerengine):
@@ -14,7 +11,7 @@ class MouseEngine:
     def clickdefault(self):
         x = self.registerengine.lastx
         y = self.registerengine.lasty
-        Log.log("click and location x,y '%s, %s' " % (x, y))
+        log.log("click and location x,y '%s, %s' " % (x, y))
         return self.leftclick(x,y)
 
     # base click by x y
@@ -22,12 +19,12 @@ class MouseEngine:
         m = PyMouse()
         m.move(x, y)
         m.click(x, y, 1)
-        return
+        return 1
 
     def clickadddefault(self, addx, addy):
-        x = self.registerengine.lastx + addx
-        y = self.registerengine.lasty + addy
-        Log.log("click and location x,y '%s, %s' " % (x, y))
+        x = int(self.registerengine.lastx + addx/self.registerengine.ratex)
+        y = int(self.registerengine.lasty + addy/self.registerengine.ratey)
+        log.log("click and location x,y '%s, %s' " % (x, y))
         return self.leftclick(x, y)
 
     # slide

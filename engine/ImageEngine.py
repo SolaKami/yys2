@@ -2,30 +2,28 @@ import os
 import cv2
 from PIL import ImageGrab
 import numpy as np
-from base import Log
+from base import log
+from base import baseenum
 
 class ImageEngine:
 
-    method = 'cv2.TM_CCOEFF_NORMED'
-
-    startx = 0
-
-    starty = 0
-
-    endx = 1400
-
-    endy = 900
-
-    registerengine = 0
-
-    os = 'mac'
-
     def __init__(self, registerengine):
+        if registerengine.os == baseenum.OS.mac:
+            self.os = "mac"
+        elif registerengine.os == baseenum.OS.win:
+            self.os = "win"
+        elif registerengine.os == baseenum.OS.mumu:
+            self.os = "mumu"
         self.registerengine = registerengine
+        self.method = 'cv2.TM_CCOEFF_NORMED'
+
 
     def getimagebypath(self, imagename):
-        rootpath = os.path.dirname(os.getcwd()) + "/Resource/" + self.os + "/"
+        rootpath = os.path.dirname(os.getcwd()) + "/Resource/" + "%s" % self.os + "/"
         imagepath = rootpath + imagename + ".png"
+
+        # Log.log(imagepath)
+
         image = cv2.imread(imagepath,0)
         return image
 
@@ -37,6 +35,7 @@ class ImageEngine:
         # get screen shot
         # backgroundshot = ImageGrab.grab((0, 0, self.endx, self.endy))
         backgroundshot = ImageGrab.grab()
+        # backgroundshot.save("C:\\Users\\baijuyi\\Documents\\GitHub\\yys2\\Resource\\1.png")
 
         # convert screen shot to image
         backgroundimage = np.array(backgroundshot.convert('L'))
@@ -63,13 +62,13 @@ class ImageEngine:
 
 
             # resize location if macos
-            if self.os == 'mac':
-                x = x / 2
-                y = y / 2
+            x = int(x / self.registerengine.ratex)
+            y = int(y / self.registerengine.ratey)
+
         else:
             x = 0
             y = 0
-        Log.log("image name is '%s' and similar value is '%s' and x,y is '%s,%s'" % (imagename, value, x, y))
+        log.log("image name is '%s' and similar value is '%s' and x,y is '%s,%s'" % (imagename, value, x, y))
         self.registerengine.lastx = x
         self.registerengine.lasty = y
         return x

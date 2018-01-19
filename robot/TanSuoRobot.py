@@ -1,56 +1,45 @@
-from engine import ImageEngine
-from engine import MouseEngine
-from engine import RegisterEngine
-from base import Log
+from engine import imageengine
+from engine import mouseengine
+from engine import registerengine
+from base import baseenum
+from base import log
 
 
 class TanSuoRobot:
 
-    # master or slave or self mode
-    # 1-master
-    # 2-slave
-    # 3-self
-    masterMode = 0
-
-    # for control battle count
-    countLimit = 0
-
-    # current battle count
-    currentCount = 0
-
-
-    # engine declare
-    imageengine = 0
-    mouseengine = 0
-    registerengine = 0
-
-
-    def __init__(self,mastermode,countlimit):
+    def __init__(self,  mastermode, countlimit):
+        # master or slave or self mode
+        # 1-master
+        # 2-slave
+        # 3-self
         self.masterMode = mastermode
+        # for control battle count
         self.countLimit = countlimit
+        # current battle count
+        self._currentCount = 0
 
         # engine initial
-        self.registerengine = RegisterEngine.RegisterEngine()
-        self.imageengine = ImageEngine.ImageEngine(self.registerengine)
-        self.mouseengine = MouseEngine.MouseEngine(self.registerengine)
+        self.registerengine = registerengine.RegisterEngine()
+        self.imageengine = imageengine.ImageEngine( self.registerengine)
+        self.mouseengine = mouseengine.MouseEngine(self.registerengine)
 
         return
 
     def start(self):
-        Log.log("start")
-        if self.masterMode == 1:
+        log.log("start")
+        if self.masterMode == baseenum.RobotMode.mastermode:
             self.masterstart()
-        elif self.masterMode == 2:
+        elif self.masterMode == baseenum.RobotMode.slavemode:
             self.salvestart()
-        elif self.masterMode == 3:
+        elif self.masterMode == baseenum.RobotMode.selfmode:
             self.selfstart()
         else:
             self.stop()
         return
 
     def salvestart(self):
-        Log.log("slave start")
-        while(self.currentCount < self.countLimit):
+        log.log("slave start")
+        while(self._currentCount < self.countLimit):
             if self.isatendbattlewindow():
                 self.clickendbattle()
             elif self.isatshowspoilswindow():
@@ -65,8 +54,10 @@ class TanSuoRobot:
             #     self.stop()
             # elif self.isatendbattlewindow():
             #     self.clickendbattle()
-            # elif self.isatwinwindow():
-            #     self.clickwin()
+            elif self.isatwinwindow():
+                self.clickwin()
+            elif self.iszhunbei():
+                self.clickzhunbei()
             # elif self.isatxuanshanginvitewindow():
             #     self.clickno()
             else:
@@ -107,6 +98,11 @@ class TanSuoRobot:
     def isatxuanshanginvitewindow(self):
         return self.imageengine.find_picture("xuanshanginvite")
 
+    def isman(self):
+        pass
+
+    def iszhunbei(self):
+        return self.imageengine.find_picture("zhunbei")
 
 # action
 
@@ -125,7 +121,7 @@ class TanSuoRobot:
         return self.mouseengine.clickdefault()
 
     def clicklowerright(self):
-        return self.mouseengine.clickadddefault(0,-100)
+        return self.mouseengine.clickadddefault(0,-152)
 
     def clickyes(self):
         # self.imageengine.find_picture("yes")
@@ -135,12 +131,15 @@ class TanSuoRobot:
         return self.mouseengine.clickdefault()
 
     def cannotrecognisesolog(self):
-        Log.log("cannot recognise")
+        log.log("cannot recognise")
         return
+
+    def clickzhunbei(self):
+        return self.mouseengine.clickdefault()
 
 # other action
 
     def stop(self):
-        self.currentCount = self.countLimit
-        Log.log("stop")
+        self._currentCount = self.countLimit
+        log.log("stop")
         return
