@@ -7,17 +7,7 @@ class RobotMode(Enum):
     selfmode = 3
 
 
-class OS(Enum):
-    mac = 'mac'
-    win = 'win'
-    mumu = 'mumu'
-
-class App(Enum):
-    desk = 1
-    moniqi = 2
+# class OS(Enum):
 
 
-class ScreenSize(Enum):
-    size2560 = 1
-    size1280 = 2
 
