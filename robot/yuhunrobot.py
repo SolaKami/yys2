@@ -6,7 +6,7 @@ from base import log
 import time
 
 
-class JuexingRobot:
+class YuhunRobot:
 
     def __init__(self,  mastermode, countlimit):
         # master or slave or self mode
@@ -23,25 +23,6 @@ class JuexingRobot:
         self.registerengine = registerengine.RegisterEngine()
         self.imageengine = imageengine.ImageEngine( self.registerengine)
         self.mouseengine = mouseengine.MouseEngine(self.registerengine)
-
-        return
-
-    def start(self):
-        log.log("juexing start")
-        while(self._currentCount < self.countLimit):
-            if False:
-                pass
-            elif self.imageengine.find_picture("tiaozhan"):
-                self.mouseengine.clickdefault()
-                self._currentCount += 1
-                time.sleep(1)
-            elif self.imageengine.find_picture("zhunbei"):
-                self.mouseengine.clickdefault()
-            elif self.imageengine.find_picture("win"):
-                self.mouseengine.clickdefault()
-            elif self.imageengine.find_picture("endbattle"):
-                self.mouseengine.clickdefault()
-        log.log("juexing start")
         return
 
 
