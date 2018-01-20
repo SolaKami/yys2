@@ -21,7 +21,7 @@ class YuhunRobot:
 
         # engine initial
         self.registerengine = registerengine.RegisterEngine()
-        self.imageengine = imageengine.ImageEngine( self.registerengine)
+        self.imageengine = imageengine.ImageEngine(self.registerengine)
         self.mouseengine = mouseengine.MouseEngine(self.registerengine)
         return
 
@@ -31,14 +31,14 @@ class YuhunRobot:
         while (self._currentCount < self.countLimit):
             if False:
                 pass
-            elif self.imageengine.find_picture("queding"):
+            elif self.masterMode == baseenum.RobotMode.mastermode and self.imageengine.find_picture("queding"):
                 self.mouseengine.clickdefault()
-            elif self.imageengine.find_picture("zifeiyue") and self.imageengine.find_picture("kaishizhandou"):
+            elif self.masterMode == baseenum.RobotMode.mastermode and self.imageengine.find_picture("zifeiyue") and self.imageengine.find_picture("kaishizhandou"):
                 self.mouseengine.clickdefault()
                 self._currentCount += 1
                 time.sleep(3)
             elif self.imageengine.find_picture("zhunbei"):
-                self.mouseengine.clickadddefault(0,-50)
+                self.mouseengine.clickadddefault(0,-60)
             elif self.imageengine.find_picture("win"):
                 self.mouseengine.clickdefault()
             elif self.imageengine.find_picture("endbattle"):
